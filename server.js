@@ -28,16 +28,16 @@ app.get('/',function(req,res){
 
 app.post('/api/photo',function(req,res){
   if(done==true){
-    res.end("File uploaded.");
-    fb('/uploads/image.jpeg');
-    console.log('-------------------------');
-    phan(function(s){
-    	console.log(s);
-    });
+    var cb = function(name){
+      console.log(name);
+      res.end(name)
+    }
+    fb('/uploads/image.jpeg',cb);
   }
 });
+var port = process.env.PORT || 3000;
 
 /*Run the server.*/
-app.listen(3000,function(){
+app.listen(port,function(){
     console.log("Working on port 3000");
 });
