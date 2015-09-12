@@ -5,7 +5,7 @@ var FormData = require('form-data'); //Pretty multipart form maker.
 var ACCESS_TOKEN = "CAACEdEose0cBAL0NZBmEZCrstDynnNqeVm1jG85MjIWsypZAIS5kZAO4qKPDZCV5DxXZBwpEquYq37kIjQ7M7nTyS91fojUKfZAQZCh7d5AnKH5Nl40ewcsfXDUzpzUhvHxbkXWyQrf5z0OJwYgEUgcC2oBNBWZCoouZAUwpNo9o4pCU3perIjQpMKDfT5vXXd64NDTwTK3EOjlY68mroU7LtG";
  var phan = require('./runPhantom');
 
-module.exports = function(path){
+module.exports = function(path,cb){
   console.log(__dirname);
   console.log('starting upload');
   var form = new FormData(); //Create multipart form
@@ -22,7 +22,7 @@ module.exports = function(path){
   //Do POST request, callback for response
   var request = https.request(options, function (res){
     phan(function(s){
-      console.log(s);
+      cb(s)
     });
   });
    
