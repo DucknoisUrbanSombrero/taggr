@@ -1,47 +1,43 @@
 var page = require('webpage').create();
-
+var page2 = require('webpage').create();
+var system = require('system');
+var args = system.args;
+var id = args[1]
 var login = function login(){
-      document.querySelector("input[name='email']").value = "mhacksglassbot@gmail.com";
-      document.querySelector("input[name='pass']").value = "franksafuck";
-      document.querySelector("#login_form").submit();    
+      page.evaluate(function(){
+        document.querySelector("input[name='email']").value = "mhacksglassbot@gmail.com";
+        document.querySelector("input[name='pass']").value = "franksafuck";
+        document.querySelector("#login_form").submit();   
+      });
 };
-var photosNav = function photosNav(){
-  window.setTimeout(function(){
-    var li = document.getElementById('navItem_2305272732');
-    var anchors = li.getElementsByTagName('a');
-    var e = document.createEvent('MouseEvents');
-    e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    anchors[1].dispatchEvent(e);
-  },200);
-};
-var getTag = function getTag(){
-   window.setTimeout(function(){
-      window.callPhantom();
-
-  },1000);
-};
-var onFunc = -1;
-var funcs = [login, photosNav, getTag];
-var returnTag = function(t){
-  console.log(t);
+var photo = function(){
+  page2.open('https://www.facebook.com/photo.php?fbid='+id,function(){
+  }); 
+}
+var tag = function(){
+  var name = page2.evaluate(function(){
+    return document.getElementsByClassName('_570u faceboxSuggestion')[0].getAttribute('data-text');
+  });
+  console.log(name);
   phantom.exit();
-};
+}
+var onFunc = -1;
+var funcs = [login,photo];
+
 page.onLoadFinished = function(){
   var title = page.evaluate(function(){
     return document.title;
   });
-  console.log(title);
-  page.render(onFunc+ '.png');
   onFunc++;
-  page.evaluate(funcs[onFunc]);
+  if(onFunc < funcs.length){
+    funcs[onFunc]();
+    page.render(onFunc + '.png');
+  }
 }
 
-page.onCallback = function(data) {
-    var name = page.evaluate(function(){
-      var arr = Array.prototype.slice.call(document.getElementsByClassName('_wgw'));
-      return arr[arr.length -1].innerHTML;
-    });
-    returnTag(name);
-};
 page.open('https://facebook.com', function(status) {
 });
+
+page2.onLoadFinished = function(){
+  tag();
+}

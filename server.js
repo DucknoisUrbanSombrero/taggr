@@ -29,6 +29,7 @@ app.get('/',function(req,res){
 
 app.post('/api/photo',function(req,res){
   if(done==true){
+
     var cb = function(name){
       if(name.trim() === 'null'){
         name = 'Unidentified';
