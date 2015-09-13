@@ -5,6 +5,7 @@ var app=express();
 var done=false;
 var fb = require('./fb');
 var phan = require('./runPhantom');
+var recentName = '';
 /*Configure the multer.*/
 
 app.use(multer({ dest: './uploads/',
@@ -31,12 +32,17 @@ app.post('/api/photo',function(req,res){
     var cb = function(name){
       console.log(name);
       res.end(name);
+      recentName = name;
       console.log('removing tag');
       phan('removeTag.js',function(){console.log('tag removed')});
     }
     fb('/uploads/image.jpg',cb);
   }
 });
+app.get('/getName',function(req,res){
+      res.sendfile(recentName);
+});
+
 var port = process.env.PORT || 3000;
 
 /*Run the server.*/
