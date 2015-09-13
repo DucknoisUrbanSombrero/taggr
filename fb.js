@@ -2,7 +2,7 @@ var https = require('https'); //Https module of Node.js
 var fs = require('fs'); //FileSystem module of Node.js
 var FormData = require('form-data'); //Pretty multipart form maker.
  
-var ACCESS_TOKEN = "CAACEdEose0cBAL0NZBmEZCrstDynnNqeVm1jG85MjIWsypZAIS5kZAO4qKPDZCV5DxXZBwpEquYq37kIjQ7M7nTyS91fojUKfZAQZCh7d5AnKH5Nl40ewcsfXDUzpzUhvHxbkXWyQrf5z0OJwYgEUgcC2oBNBWZCoouZAUwpNo9o4pCU3perIjQpMKDfT5vXXd64NDTwTK3EOjlY68mroU7LtG";
+var ACCESS_TOKEN = "CAACEdEose0cBAHx4MOGCRKM6yK9Kb4dIxcZAet3eVjBSbqrzCZAUdUQZAZBtZAD8wi7hlVtcvjqzASUW7iyXpAWDE7BR3Y8OMmnpfp5QdVriOXqkeWf4smdkIY9udw4o8PDjaKGVZBqdRmry1yB8LzrGEBhdNWDZAy1NyZAqCTaj1RAmDMSDedZBuZC7ObEWRLPDV0kKUXWTNXHnKFVWCSYFlD";
  var phan = require('./runPhantom');
 
 module.exports = function(path,cb){
@@ -21,7 +21,8 @@ module.exports = function(path,cb){
   }
   //Do POST request, callback for response
   var request = https.request(options, function (res){
-    phan(function(s){
+    console.log('upload complete, extracting data');
+    phan('getTag.js',function(s){
       cb(s)
     });
   });

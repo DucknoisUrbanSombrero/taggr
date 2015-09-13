@@ -30,9 +30,11 @@ app.post('/api/photo',function(req,res){
   if(done==true){
     var cb = function(name){
       console.log(name);
-      res.end(name)
+      res.end(name);
+      console.log('removing tag');
+      phan('removeTag.js',function(){console.log('tag removed')});
     }
-    fb('/uploads/image.jpeg',cb);
+    fb('/uploads/image.jpg',cb);
   }
 });
 var port = process.env.PORT || 3000;
