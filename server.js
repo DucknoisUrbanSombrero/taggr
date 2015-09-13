@@ -33,8 +33,8 @@ app.post('/api/photo',function(req,res){
       console.log(name);
       res.end(name);
       recentName = name;
-      console.log('removing tag');
-      phan('removeTag.js',function(){console.log('tag removed')});
+      // console.log('deleting album');
+      // phan('removeTag.js',function(){console.log('album deleted')});
     }
     fb('/uploads/image.jpg',cb);
   }
