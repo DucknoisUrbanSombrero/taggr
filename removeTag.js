@@ -14,7 +14,7 @@ var photosNav = function photosNav(){
     anchors[1].dispatchEvent(e);
   },200);
 };
-var getTag = function getTag(){
+var gotoAlbums = function gotoAlbums(){
     var a = Array.prototype.slice.call(document.getElementsByTagName('a'));
     var e = document.createEvent('MouseEvent');
     e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -27,19 +27,6 @@ var getTag = function getTag(){
         return true;
       }
     });
-    window.setTimeout(function(){
-      var a = Array.prototype.slice.call(document.getElementsByTagName('a'));
-      var e = document.createEvent('MouseEvent');
-      e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      a.every(function(anchor,i){
-        if(anchor.innerHTML.indexOf('Graph API Explorer Photos')!== -1){
-          anchor.dispatchEvent(e);
-          return false;
-        }else {
-          return true;
-          }
-        });
-      },2000);
 };
 var openAlbum = function(){
     var a = Array.prototype.slice.call(document.getElementsByTagName('a'));
@@ -47,6 +34,7 @@ var openAlbum = function(){
     e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
     a.every(function(anchor,i){
       if(anchor.innerHTML.indexOf('Graph API Explorer Photos')!== -1){
+        console.log(anchor);
         anchor.dispatchEvent(e);
         return false;
       }else {
@@ -55,84 +43,45 @@ var openAlbum = function(){
     });
 }
 var editAlbum = function(){
-  var anchors = Array.prototype.slice.call(document.getElementsByTagName('a'));
   var e = document.createEvent('MouseEvent');
   e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+  var i = document.getElementsByClassName('img sp_U0hSS2umViQ sx_04bb31')[0];
+  i.parentNode.parentNode.dispatchEvent(e);
+  var anchors = Array.prototype.slice.call(document.getElementsByTagName('a'));
   anchors.forEach(function(a,i){
-    if(a.innerHTML.indexOf('Edit')!== -1){
+    console.log(i+ ' ---- '+ anchors.length);
+    if(a.innerHTML.indexOf('Delete Album')!== -1){
       a.dispatchEvent(e)
+      console.log('found link, about to delete')
     }
   });
+  window.setTimeout(function(){
+    window.callPhantom();
+  }, 1000);
 }
-var deleteAlbum = function(){
-   var but = document.getElementsByClassName('_42ft _42me _42mf');
-    console.log(JSON.stringify(but));
-    var e = document.createEvent('MouseEvent');
-    e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    but[0].dispatchEvent(e);
-    window.setTimeout(function(){
-      console.log('g');
-      var buttons = Array.prototype.slice.call(document.getElementsByTagName('button'));
-      buttons.forEach(function(b,i){
-        if(b.innerHTML.indexOf('Delete Album')!==-1){
-            var e = document.createEvent('MouseEvent');
-            e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            b.dispatchEvent(e);
-        }
-      });
-    },1500);
-}
-var onFunc = -1;
-var funcs = [login, photosNav, getTag,function(){},editAlbum, deleteAlbum];
 
+var onFunc = -1;
+var funcs = [login, photosNav, gotoAlbums,openAlbum, function(){console.log('inbetween time!')},
+editAlbum];
+page.onCallBack = function(){
+  console.log('7');
+  phantom.render('7.png');
+  var buttons = Array.prototype.slice.call(document.getElementsByTagName('button'));
+  buttons[buttons.length -1].dispatchEvent(e);
+};
 page.onLoadFinished = function(){
   console.log('-----------------------');
-  var title = page.evaluate(function(){
-    return document.title;
-  });
-  console.log(title);
   onFunc++;
-  page.render(onFunc+ '.png');
+  page.render(onFunc + '.png');
   console.log(onFunc);
+  if(onFunc <funcs.length){
   page.evaluate(funcs[onFunc]);
-  if(onFunc === funcs.length -1){
-    phantom.exit();
+    // phantom.exit();
   }
 }
 page.onConsoleMessage = function(m){
   console.log(m);
 }
-page.onCallback = function(data) {
-  page.evaluate(function(){
-      var a = Array.prototype.slice.call(document.getElementsByTagName('a'));
-      var e = document.createEvent('MouseEvent');
-      e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      a.every(function(anchor,i){
-        if(anchor.innerHTML.indexOf('Albums')!== -1){
-          console.log(anchor.innerHTML);
-          anchor.dispatchEvent(e);
-          return false;
-        }else {
-          return true;
-        }
-      });
-    });
-  page.render('3.5.png')
-  page.evaluate(function(){
-    window.setTimeout(function(){
-      var a = Array.prototype.slice.call(document.getElementsByTagName('a'));
-      var e = document.createEvent('MouseEvent');
-      e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      a.every(function(anchor,i){
-        if(anchor.innerHTML.indexOf('Graph API Explorer Photos')!== -1){
-          anchor.dispatchEvent(e);
-          return false;
-        }else {
-          return true;
-          }
-        });
-      });
-    },2000);
-};
+
 page.open('https://facebook.com', function(status) {
 });

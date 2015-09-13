@@ -1,1 +1,1 @@
-phantomjs --ssl-protocol=any index.js 
+phantomjs --ssl-protocol=any removeTag.js 
