@@ -40,7 +40,7 @@ app.post('/api/photo',function(req,res){
   }
 });
 app.get('/api/getName',function(req,res){
-      res.send(recentName);
+      res.end(recentName);
 });
 
 var port = process.env.PORT || 3000;
