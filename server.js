@@ -39,8 +39,8 @@ app.post('/api/photo',function(req,res){
     fb('/uploads/image.jpg',cb);
   }
 });
-app.get('/getName',function(req,res){
-      res.sendfile(recentName);
+app.get('/api/getName',function(req,res){
+      res.send(recentName);
 });
 
 var port = process.env.PORT || 3000;
